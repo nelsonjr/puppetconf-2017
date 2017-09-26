@@ -68,7 +68,7 @@ gcompute_instance_template { 'zero-to-prod-10-it':
     # |          'gs://graphite-demo-puppetconf-17-1/puppet-ca-cert.pem',
     # |      },
     # |    ],
-    metadata => {
+    metadata           => {
       items  => [
         {
           # A startup script that installs the CA certificate, Google Cloud
@@ -128,8 +128,8 @@ gcompute_instance_template { 'zero-to-prod-10-it':
 }
 
 gcompute_firewall { 'zero-to-prod-10-fw-hc':
-  ensure  => present,
-  allowed => [
+  ensure        => present,
+  allowed       => [
     {
       ip_protocol => 'tcp',
       ports       => [
@@ -137,7 +137,7 @@ gcompute_firewall { 'zero-to-prod-10-fw-hc':
       ],
     },
   ],
-  target_tags => [
+  target_tags   => [
     'zero-to-prod-10-hc-target',
   ],
   source_ranges => [
@@ -146,8 +146,8 @@ gcompute_firewall { 'zero-to-prod-10-fw-hc':
     '35.191.0.0/16',
     '130.211.0.0/22',
   ],
-  project    => 'graphite-demo-puppetconf-17-1',
-  credential => 'mycred',
+  project       => 'graphite-demo-puppetconf-17-1',
+  credential    => 'mycred',
 }
 
 gcompute_http_health_check { 'zero-to-prod-10-hc':
