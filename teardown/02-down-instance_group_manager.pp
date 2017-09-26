@@ -15,13 +15,13 @@ gauth_credential { 'mycred':
 }
 
 gcompute_zone { 'us-west1-a':
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }
 
 gcompute_instance_group_manager { 'zero-to-prod-10-mig':
   ensure     => absent,
   zone       => 'us-west1-a',
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }

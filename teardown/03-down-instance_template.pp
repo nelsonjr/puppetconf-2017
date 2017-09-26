@@ -16,6 +16,6 @@ gauth_credential { 'mycred':
 
 gcompute_instance_template { 'zero-to-prod-10-it':
   ensure     => absent,
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }

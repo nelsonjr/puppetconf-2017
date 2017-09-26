@@ -15,13 +15,13 @@ gauth_credential { 'mycred':
 }
 
 gcompute_region { 'us-west1':
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }
 
 gcompute_target_pool { 'zero-to-prod-10-tp':
   ensure     => absent,
   region     => 'us-west1',
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }

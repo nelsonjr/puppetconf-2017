@@ -16,6 +16,6 @@ gauth_credential { 'mycred':
 
 gcompute_http_health_check { 'zero-to-prod-10-hc':
   ensure     => absent,
-  project    => 'google.com:graphite-playground',
+  project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }
