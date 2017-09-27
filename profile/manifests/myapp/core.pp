@@ -1,5 +1,6 @@
-class profile::myapp {
+class profile::myapp::core {
 
+  include apache
   include apache::mod::php
 
   file { '/opt/myapp':
@@ -18,18 +19,6 @@ class profile::myapp {
         path        => '/opt/myapp/status.php',
       },
     ],
-  }
-
-  file { '/opt/myapp/index.php':
-    ensure  => file,
-    content => join(
-      [
-        '<?php',
-        "header('X-Source: ' . gethostname());",
-        "echo 'Hello from ' . gethostname() . '!';",
-        '?>',
-      ], "\n"
-    ),
   }
 
   file { '/opt/myapp/status.php':
