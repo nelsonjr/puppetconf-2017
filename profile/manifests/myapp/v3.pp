@@ -1,21 +1,15 @@
-class profile::myapp::v3 {
+class profile::myapp::v3 inherits profile::myapp::v2 {
 
-  include profile::myapp::core
-
-  file { '/opt/myapp/index.php':
-    ensure  => file,
-    owner  => root,
-    group  => root,
-    mode   => '0644',
+  File['/opt/myapp/index.php'] {
     source => 'puppet:///modules/profile/myapp/v3/index.php',
   }
 
-  file { '/opt/myapp/load.php':
+  file { '/opt/myapp/frame.php':
     ensure  => file,
     owner  => root,
     group  => root,
     mode   => '0644',
-    source => 'puppet:///modules/profile/myapp/v3/load.php',
+    source => 'puppet:///modules/profile/myapp/v3/frame.php',
   }
 
 }
