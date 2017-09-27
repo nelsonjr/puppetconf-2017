@@ -18,12 +18,12 @@ class profile::myapp::v2 {
     source => 'puppet:///modules/profile/google-cloud-platform-logo.png',
   }
 
-  file { '/opt/myapp/puppetconf-logo.png':
+  file { '/opt/myapp/puppet-logo.png':
     ensure => file,
     owner  => root,
     group  => root,
     mode   => '0644',
-    source => 'puppet:///modules/profile/puppetconf-logo.png',
+    source => 'puppet:///modules/profile/puppet-logo.png',
   }
 
 }

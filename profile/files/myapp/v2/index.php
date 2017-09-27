@@ -12,10 +12,11 @@ header('Content-Type: text/html');
     }
     #banner {
       background-color: gray;
-      padding: 8pt;
+      padding: 6pt;
     }
     #banner IMG {
       height: 48px;
+      vertical-align: middle;
     }
     #content {
       margin: 16pt;
@@ -30,12 +31,21 @@ header('Content-Type: text/html');
       margin-left: 8pt;
       margin-right: 8pt;
     }
+    #amp {
+      font-weight: bold;
+      color: white;
+      font-size: 36pt;
+      margin-left: 16pt;
+      margin-right: 16pt;
+      vertical-align: middle;
+    }
     </style>
   </head>
   <body>
     <div id='banner'>
       <img id='gcp' src='google-cloud-platform-logo.png'>
-      <img id='puppet' src='puppetconf-logo.png'>
+      <span id='amp'>+</span>
+      <img id='puppet' src='puppet-logo.png'>
     </div>
     <div id='content'>
       <p>Hello from <code><?= gethostname() ?></code> !</p>
