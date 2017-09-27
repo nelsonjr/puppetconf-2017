@@ -42,12 +42,16 @@ $host = gethostname();
       display: table-cell;
       margin: 0;
     }
-    div.content {
-      display: inline-block;
-      background-color: #fff;
+<?php if (!$_GET['stress']) { ?>
+    #stress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16pt;
       text-align: center;
-      padding: 10px;
     }
+<?php } ?>
   </style>
   <title><?= $host ?></title>
 </head>
@@ -60,5 +64,10 @@ $host = gethostname();
       </div>
     </div>
   </div>
+<?php if (!$_GET['stress']) { ?>
+  <div id='stress'>
+    <a href='load.php'>Start stressed version</a>
+  </div>
+<?php } ?>
 </body>
 </html>
