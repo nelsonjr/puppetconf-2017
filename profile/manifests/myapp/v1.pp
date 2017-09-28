@@ -8,6 +8,7 @@ class profile::myapp::v1 {
       [
         '<?php',
         "header('X-Source: ' . gethostname());",
+        "header('X-Version: 1.0');",
         "header('Content-Type: text/plain');",
         '?>',
         ' _____                        _    _____             __   __ ______ ',

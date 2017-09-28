@@ -1,5 +1,6 @@
 <?php
 header('X-Source: ' . gethostname());
+header('X-Version: 2.0');
 header('Content-Type: text/html');
 ?>
 <html>
