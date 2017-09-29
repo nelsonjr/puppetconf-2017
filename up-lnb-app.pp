@@ -127,6 +127,17 @@ gcompute_instance_template { 'zero-to-prod-10-it':
   credential => 'mycred',
 }
 
+# TODO(nelsonjr): Remove 'http-server' tag from the template and change the
+# comment below to reflect that we protected the machines.
+#
+# This firewall rule would be redundant as our service is already open to the
+# Internet. However, for more locked down scenarios, e.g. when only traffic from
+# your corporate network is allowed, you still want to allow the health checkers
+# to reach your endpoints and assert health.
+#
+# This rule is also useful if you have a load balancer that has internet access,
+# but you do not want direct connection from the Internet to the machine (this
+# is preferred to shield the machines from the outside).
 gcompute_firewall { 'zero-to-prod-10-fw-hc':
   ensure        => present,
   allowed       => [
@@ -153,6 +164,7 @@ gcompute_firewall { 'zero-to-prod-10-fw-hc':
 gcompute_http_health_check { 'zero-to-prod-10-hc':
   ensure              => present,
   healthy_threshold   => 10,
+  request_path        => '/status',
   port                => 80,
   timeout_sec         => 2,
   unhealthy_threshold => 5,
