@@ -1,6 +1,5 @@
 <?php
 header('X-Source: ' . gethostname());
-header('X-Version: 3.0');
 header('Content-Type: text/html');
 ?>
 <html>
@@ -20,6 +19,14 @@ header('Content-Type: text/html');
     #banner IMG {
       height: 48px;
       vertical-align: middle;
+    }
+    #banner #slogan {
+      font-size: 24pt;
+      font-weight: bold;
+      color: white;
+      float: right;
+      margin: 6pt;
+      opacity: 0.25;
     }
     #content {
       margin: 16pt;
@@ -70,6 +77,16 @@ header('Content-Type: text/html');
     INPUT {
       margin: 0;
     }
+    #version {
+      color: gray;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 16pt;
+      margin-left: 20pt;
+      margin-right: 20pt;
+      font-size: 10pt;
+    }
     </style>
     <script>
       function getParameterByName(name, url) {
@@ -81,16 +98,20 @@ header('Content-Type: text/html');
           if (!results[2]) return '';
           return decodeURIComponent(results[2].replace(/\+/g, " "));
       }
+
       function updateLoad() {
         var rows = document.all.rows.value;
         var cols = document.all.cols.value;
+
         var params = {
           rows: rows != '1' ? rows : null,
           cols: cols != '1' ? cols : null,
           refresh: document.all.refresh.checked ? 1 : null
         }
+
         var new_location = document.location.origin
             + document.location.pathname;
+
         var query = '';
         for (var p in params) {
           if (params[p] != null) {
@@ -100,9 +121,11 @@ header('Content-Type: text/html');
             query += p + '=' + params[p];
           }
         }
+
         if (query.length) {
           new_location += '?' + query;
         }
+
         document.location = new_location;
       }
     </script>
@@ -122,6 +145,10 @@ header('Content-Type: text/html');
       <img id='gcp' src='google-cloud-platform-logo.png'>
       <span id='amp'>+</span>
       <img id='puppet' src='puppet-logo.png'>
+      <div id='slogan'>
+        From nothing to production in 10 minutes!
+        Make it scalable in 30 minutes!
+      </div>
     </div>
     <div id='cpanel'>
       <div id='title'>
@@ -158,6 +185,9 @@ header('Content-Type: text/html');
         </tr>
 <?php } ?>
       </table>
+    </div>
+    <div id='version'>
+      Version 3.0
     </div>
   </body>
 </html>
