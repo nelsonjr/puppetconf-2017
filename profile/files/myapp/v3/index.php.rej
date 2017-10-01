@@ -1,0 +1,60 @@
+--- index.php        2017-10-01 20:38:18.899462327 +0000
++++ index.php   2017-10-01 21:01:36.438624343 +0000
+@@ -132,24 +132,36 @@
+         document.location = new_location;
+       }
+
+-        function something_wrong(who) {
+-               alert(who);
++       function loadFrame(frame) {
++               var xhr = new XMLHttpRequest();
++               xhr.onreadystatechange = function() {
++                   if (xhr.readyState == XMLHttpRequest.DONE) {
++                       if (xhr.status == 200) {
++                               frame.style.backgroundColor = 'green';
++                               frame.contentWindow.document.open();
++                               frame.contentWindow.document.write(xhr.responseText);
++                               frame.contentWindow.document.close();
++                       } else {
++                               frame.style.backgroundColor = 'red';
++                               setTimeout(function() { loadFrame(frame); }, 500);
++                       }
++                   }
++               }
++               if (Math.random() > 0.7) {
++                       xhr.open('GET', 'badwolf', true);
++               } else {
++                       xhr.open('GET', 'frame.php?refresh=<?= $_GET['refresh'] ?>', true);
++               }
++               xhr.send(null);
++
+        }
+
+-       function reload_frames() {
++       function pageLoaded() {
+                var frames = document.getElementsByTagName('IFRAME');
+                for (i = 0; i < frames.length; i++) {
+-                       var frame = frames[i];
+-       //              frame.contentWindow.location.reload();
+-                       frame.contentWindow.location = '/badwolf';
++                       loadFrame(frames[i]);
+                }
+        }
+-
+-       function refresh_all() {
+-               var frames = document.getElementsByTagName('IFRAME');
+-
+-               setTimeout("reload_frames()", 1000);
+-       }
+     </script>
+   </head>
+ <?php
+@@ -162,7 +174,7 @@
+     $rows = 1;
+   }
+ ?>
+-  <body onload='refresh_all()'>
++  <body onload='pageLoaded()'>
+     <div id='banner'>
+       <img id='gcp' src='google-cloud-platform-logo.png'>
+       <span id='amp'>+</span>

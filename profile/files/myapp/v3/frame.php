@@ -17,9 +17,6 @@ $host = gethostname();
   <meta http-equiv="Cache-Control" content="no-cache, no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-<?php if ($_GET['refresh']) { ?>
-  <meta http-equiv="refresh" content="5">
-<?php } ?>
   <style>
     body {
       margin: 0;
@@ -58,25 +55,32 @@ $host = gethostname();
       text-align: center;
       padding: 10px;
     }
-    #refresh {
-      font-family: Roboto;
-      font-size: calc(14px + 1vw);
-    }
-    #refresh A {
-      text-decoration: none;
+    #loaded {
+      position: absolute;
+      font-size: 24pt;
+      font-weight: bold;
+      bottom: 4pt;
+      right: 4pt;
+      color: white;
+      opacity: 0.5;
     }
   </style>
   <title><?= $host ?></title>
+  <script>
+    function flashReload() {
+      setTimeout(function() {
+        document.all.loaded.style.display = 'none';
+      }, 1000);
+    }
+  </script>
 </head>
-<body>
+<body onload='flashReload()'>
   <div class="frameT">
     <div class="frameTC">
       <div class="content">
         <h1><script>document.write(document.title);</script></h1>
-        <?= date('r') ?>
-        <span id='refresh'>
-          <a href='javascript:location.reload(true)'><?= $_GET['refresh'] ? '&#x21bb;' : '' ?></a>
-        </span>
+        <span id='generated'><?= date('r') ?></span>
+       <div id='loaded'>&#x21bb;</div>
       </div>
     </div>
   </div>

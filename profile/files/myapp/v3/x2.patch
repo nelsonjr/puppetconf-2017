@@ -1,0 +1,100 @@
+diff -u ../frame.php ./frame.php
+--- ../frame.php        2017-10-01 21:29:51.185595980 +0000
++++ ./frame.php 2017-10-01 21:24:16.601805371 +0000
+@@ -80,7 +80,7 @@
+       <div class="content">
+         <h1><script>document.write(document.title);</script></h1>
+         <span id='generated'><?= date('r') ?></span>
+-       <div id='loaded'>&#x21bb;</div>
++       <div id='loaded'>&#x21bb;</div>
+       </div>
+     </div>
+   </div>
+diff -u ../index.php ./index.php
+--- ../index.php        2017-10-01 21:29:50.409596466 +0000
++++ ./index.php 2017-10-01 22:03:00.052379370 +0000
+@@ -5,6 +5,18 @@
+ header('Cache-Control: must-revalidate');
+ header('Cache-Control: no-cache');
+ ?>
++<?php
++  $cols = $_GET['cols'];
++  if (empty($cols)) {
++    $cols = 1;
++  }
++  $rows = $_GET['rows'];
++  if (empty($rows)) {
++    $rows = 1;
++  }
++  $failures = $_GET['failures'];
++  $failure_sec = $_GET['failure_sec'];
++?>
+ <html>
+   <head>
+     <link href="https://fonts.googleapis.com/css?family=Roboto"
+@@ -105,10 +117,14 @@
+       function updateLoad() {
+         var rows = document.all.rows.value;
+         var cols = document.all.cols.value;
++        var fail_sec = document.all.failure_sec.value;
++        var failures = document.all.failures.checked;
+
+         var params = {
+           rows: rows != '1' ? rows : null,
+           cols: cols != '1' ? cols : null,
++          failures: failures ? 1 : null,
++          failure_sec: failures ? fail_sec : null,
+           refresh: document.all.refresh.checked ? 1 : null
+         }
+
+@@ -156,10 +172,14 @@
+               frame.contentWindow.document.write(xhr.responseText);
+               frame.contentWindow.document.close();
+             } else {
++<?php if ($failures) { ?>
+               frame.contentWindow.document.open();
+               frame.contentWindow.document.write("<font size='18pt'>&#x2620;</font>");
+               frame.contentWindow.document.close();
+-              setTimeout(function() { loadFrame(frame); }, 500);
++              setTimeout(function() { loadFrame(frame); }, <?= $failure_sec ?> * 1000);
++<?php } else { /* immediate reload */ ?>
++              loadFrame(frame);
++<?php } ?>
+             }
+           }
+         }
+@@ -175,16 +195,6 @@
+       }
+     </script>
+   </head>
+-<?php
+-  $cols = $_GET['cols'];
+-  if (empty($cols)) {
+-    $cols = 1;
+-  }
+-  $rows = $_GET['rows'];
+-  if (empty($rows)) {
+-    $rows = 1;
+-  }
+-?>
+   <body onload='pageLoaded()'>
+     <div id='banner'>
+       <img id='gcp' src='google-cloud-platform-logo.png'>
+@@ -217,6 +227,17 @@
+           onclick='updateLoad()'
+           <?= $_GET['refresh'] ? 'checked' : '' ?>>
+       automatically refresh
++      <div id='divider'></div>
++      <input type='checkbox' id='failures' name='failures'
++          onclick='updateLoad()'
++          <?= $_GET['failures'] ? 'checked' : '' ?>>
++      show failures:
++      <select id='failure_sec' name='failure_sec' onchange='updateLoad()'
++          <?= ! $failures ? 'disabled' : '' ?>>
++<?php foreach ([0.1, 0.5, 1, 2] as $v) { ?>
++        <option <?= $failure_sec == $v ? 'selected' : ''?> value='<?= $v ?>'><?= $v ?> sec</option>
++<?php } ?>
++      </select>
+     </div>
+     <div id='content'>
+       <table>
