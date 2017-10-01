@@ -184,11 +184,31 @@ gcompute_instance_group_manager { 'zero-to-prod-10-mig':
   ensure             => present,
   base_instance_name => 'zero-to-prod-10-vm',
   instance_template  => 'zero-to-prod-10-it',
-  target_size        => 3,
+  target_size        => 10,
   target_pools       => [
     'zero-to-prod-10-tp',
   ],
   zone               => 'us-west1-a',
   project            => 'graphite-demo-puppetconf-17-1',
   credential         => 'mycred',
+}
+
+gcompute_address { 'zero-to-prod-10-ip':
+  ensure     => present,
+  region     => 'us-west1',
+  project    => 'graphite-demo-puppetconf-17-1',
+  credential => 'mycred',
+}
+
+gcompute_forwarding_rule { 'zero-to-prod-10-fwd':
+  ensure      => present,
+  ip_address  => gcompute_address_ref(
+    'zero-to-prod-10-ip', 'us-west1', 'graphite-demo-puppetconf-17-1'
+  ),
+  ip_protocol => 'TCP',
+  port_range  => '80',
+  target      => 'zero-to-prod-10-tp',
+  region      => 'us-west1',
+  project     => 'graphite-demo-puppetconf-17-1',
+  credential  => 'mycred',
 }

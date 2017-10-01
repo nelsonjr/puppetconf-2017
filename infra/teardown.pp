@@ -24,6 +24,17 @@ gcompute_zone { 'us-west1-a':
   credential => 'mycred',
 }
 
+gcompute_forwarding_rule { 'zero-to-prod-10-fwd':
+  ensure     => absent,
+  region     => 'us-west1',
+  project    => 'graphite-demo-puppetconf-17-1',
+  credential => 'mycred',
+  before     => [
+    Gcompute_address['zero-to-prod-10-ip'],
+    Gcompute_target_pool['zero-to-prod-10-tp'],
+  ],
+}
+
 gcompute_target_pool { 'zero-to-prod-10-tp':
   ensure     => absent,
   region     => 'us-west1',
@@ -51,6 +62,13 @@ gcompute_instance_template { 'zero-to-prod-10-it':
 
 gcompute_http_health_check { 'zero-to-prod-10-hc':
   ensure     => absent,
+  project    => 'graphite-demo-puppetconf-17-1',
+  credential => 'mycred',
+}
+
+gcompute_address { 'zero-to-prod-10-ip':
+  ensure     => absent,
+  region     => 'us-west1',
   project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
 }
