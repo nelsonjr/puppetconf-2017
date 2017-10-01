@@ -2,6 +2,8 @@
 header('X-Source: ' . gethostname());
 header('X-Version: 2.0');
 header('Content-Type: text/html');
+header('Cache-Control: must-revalidate');
+header('Cache-Control: no-cache');
 ?>
 <html>
   <head>

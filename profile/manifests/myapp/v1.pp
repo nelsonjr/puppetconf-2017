@@ -10,6 +10,8 @@ class profile::myapp::v1 {
         "header('X-Source: ' . gethostname());",
         "header('X-Version: 1.0');",
         "header('Content-Type: text/plain');",
+        "header('Cache-Control: must-revalidate');",
+        "header('Cache-Control: no-cache');",
         '?>',
         ' _____                        _    _____             __   __ ______ ',
         '|  __ \                      | |  / ____|           / _| /_ |____  |',
