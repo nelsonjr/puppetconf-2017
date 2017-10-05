@@ -17,6 +17,8 @@ $host = gethostname();
   <meta http-equiv="Cache-Control" content="no-cache, no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+      rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -64,6 +66,37 @@ $host = gethostname();
       color: white;
       opacity: 0.5;
     }
+<?php if ($_GET['debug']) { ?>
+    #debug {
+      display: inline-block;
+      border-radius: 8pt;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin: 0 auto;
+      margin-top: 8pt;
+      padding: 10px;
+    }
+    #debug-info .name {
+      font-size: 8pt;
+    }
+    #debug-info .value {
+      font-family: 'Roboto Mono', serif;
+    }
+    BUTTON {
+      margin-top: 8pt;
+      border-radius: 8pt;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 4pt;
+      padding-left: 8pt;
+      padding-right: 8pt;
+    }
+    BUTTON:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    #computer {
+      margin-right: 4pt;
+    }
+<?php } ?>
   </style>
   <title><?= $host ?></title>
   <script>
@@ -72,6 +105,18 @@ $host = gethostname();
         document.all.loaded.style.display = 'none';
       }, 1000);
     }
+<?php if ($_GET['debug']) { ?>
+    function openSshTerminal() {
+      window.open([
+        'https://ssh.cloud.google.com',
+        '/projects/graphite-demo-puppetconf-17-1',
+        '/zones/us-central1-a',
+        '/instances/puppet',
+        '?authuser=0&hl=en_US',
+        '&projectNumber=433834288832'
+      ].join(''));
+    }
+<?php } ?>
   </script>
 </head>
 <body onload='flashReload()'>
@@ -82,6 +127,35 @@ $host = gethostname();
         <span id='generated'><?= date('r') ?></span>
        <div id='loaded'>&#x21bb;</div>
       </div>
+<?php if ($_GET['debug']) { ?>
+      <div class='debugTC'>
+        <div id='debug'>
+          <table id='debug-info'>
+            <tr>
+              <td class='name'>Hostname:</td>
+              <td class='value'>XXXX</td>
+            </tr>
+            <tr>
+              <td class='name'>Zone:</td>
+              <td class='value'>XXXX</td>
+            </tr>
+            <tr>
+              <td class='name'>Region:</td>
+              <td class='value'>XXXX</td>
+            </tr>
+            <tr>
+              <td class='name'>Project:</td>
+              <td class='value'>XXXX</td>
+            </tr>
+          </table>
+          <div>
+            <button onclick='openSshTerminal()'>
+              <span id='computer'>&#x1f4bb;</span> SSH
+            </button>
+          </div>
+        </div>
+      </div>
+<?php } ?>
     </div>
   </div>
 </body>

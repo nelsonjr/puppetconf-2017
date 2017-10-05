@@ -52,12 +52,17 @@ header('Cache-Control: no-cache');
     TABLE {
       width: 100%;
     }
-    TD {
+    TR {
       padding: 4pt;
     }
     IFRAME {
       border: 1px solid gray;
       width: 100%;
+<?php if ($_GET['debug']) { ?>
+      height: 300px;
+<?php } else { ?>
+      height: 150px;
+<?php } ?>
     }
     #amp {
       font-weight: bold;
@@ -122,13 +127,15 @@ header('Cache-Control: no-cache');
         var cols = document.all.cols.value;
         var fail_sec = document.all.failure_sec.value;
         var failures = document.all.failures.checked;
+        var debug = document.all.debug.checked;
 
         var params = {
           rows: rows != '1' ? rows : null,
           cols: cols != '1' ? cols : null,
           failures: failures ? 1 : null,
           failure_sec: failures ? fail_sec : null,
-          refresh: document.all.refresh.checked ? 1 : null
+          refresh: document.all.refresh.checked ? 1 : null,
+          debug: document.all.debug.checked ? 1 : null
         }
 
         var new_location = document.location.origin
@@ -167,6 +174,7 @@ header('Cache-Control: no-cache');
         }
       }
       function loadFrame(frame) {
+        var debug = document.all.debug.checked;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -186,7 +194,7 @@ header('Cache-Control: no-cache');
             }
           }
         }
-        xhr.open('GET', 'frame.php', true);
+        xhr.open('GET', 'frame.php' + (debug ? '?debug=1' : ''), true);
         xhr.send(null);
       }
 
@@ -241,6 +249,11 @@ header('Cache-Control: no-cache');
         <option <?= $failure_sec == $v ? 'selected' : ''?> value='<?= $v ?>'><?= $v ?> s</option>
 <?php } ?>
       </select>
+      <div id='divider'></div>
+      <input type='checkbox' id='debug' name='debug'
+          onclick='updateLoad()'
+          <?= $_GET['debug'] ? 'checked' : '' ?>>
+      debug
     </div>
     <div id='content'>
       <table>
