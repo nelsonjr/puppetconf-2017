@@ -7,7 +7,7 @@
 
 
 gauth_credential { 'mycred':
-  path     => $cred_path, # e.g. '/home/nelsonjr/my_account.json'
+  path     => '/home/nelsona/my_account.json',
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',
