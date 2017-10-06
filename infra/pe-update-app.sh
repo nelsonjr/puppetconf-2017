@@ -7,8 +7,9 @@ puppet job run --query \
 
 declare -r tok_miss=$(grep -c 'No credentials supplied' "${logfile}")
 declare -r tok_exp=$(grep -c 'The provided token has expired' "${logfile}")
+declare -r tok_rev=$(grep -c 'The provided token is revoked.' "${logfile}")
 
-if [[ $tok_miss -gt 0 || $tok_exp -gt 0 ]]; then
+if [[ $tok_miss -gt 0 || $tok_exp -gt 0 || $tok_rev -gt 0  ]]; then
   echo 'Login required'
   err=1
   while [[ $err -ne 0 ]]; do
