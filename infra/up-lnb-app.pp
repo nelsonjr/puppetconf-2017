@@ -158,7 +158,7 @@ gcompute_target_pool { 'zero-to-prod-10-tp':
 
 gcompute_instance_group_manager { 'zero-to-prod-10-mig':
   ensure             => present,
-  base_instance_name => 'zero-to-prod-10-vm',
+  base_instance_name => 'zero-to-prod-10-lnb',
   instance_template  => 'zero-to-prod-10-it',
   target_size        => 10,
   target_pools       => [
