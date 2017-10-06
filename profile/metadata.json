@@ -11,7 +11,7 @@
   "dependencies": [
     {
       "name": "google-cloud",
-      "version_requirement": "< 0.2.0"
+      "version_requirement": ">= 0.2.0 < 0.3.0"
     }
   ],
   "data_provider": null,

@@ -6,7 +6,7 @@
 #             |_|   |_|                                                        
 
 gauth_credential { 'mycred':
-  path     => $cred_path, # e.g. '/home/nelsonjr/my_account.json'
+  path     => '/home/nelsona/my_account.json',
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',
@@ -52,42 +52,18 @@ gcompute_instance_template { 'zero-to-prod-10-it':
         }
       }
     ],
-    # XXX XXX XXX XXX 
-    # |    metadata           => [
-    # |      {
-    # |        # A startup script that installs the CA certificate, Google Cloud
-    # |        # Logging, and defer to Puppet Agent installer script.
-    # |        'startup-script-url'     =>
-    # |          'gs://graphite-demo-puppetconf-17-1/bootstrap.sh',
-    # |        # The URL of the Puppet Agent installer
-    # |        'puppet-agent-installer' =>
-    # |          "https://${master_server}:8140/packages/current/install.bash",
-    # |        # A trusted location where to fetch CA certificate (if not publicly
-    # |        # trusted, or trusted by the image being deployed already).
-    # |        'puppet-ca-cert'         =>
-    # |          'gs://graphite-demo-puppetconf-17-1/puppet-ca-cert.pem',
-    # |      },
-    # |    ],
     metadata           => {
-      items  => [
-        {
-          # A startup script that installs the CA certificate, Google Cloud
-          # Logging, and defer to Puppet Agent installer script.
-          key   => 'startup-script-url',
-          value => 'gs://graphite-demo-puppetconf-17-1/bootstrap.sh',
-        },
-        {
-          # The URL of the Puppet Agent installer
-          key   => 'puppet-agent-installer',
-          value => "https://${master_server}:8140/packages/current/install.bash",
-        },
-        {
-          # A trusted location where to fetch CA certificate (if not publicly
-          # trusted, or trusted by the image being deployed already).
-          key   => 'puppet-ca-cert',
-          value => 'gs://graphite-demo-puppetconf-17-1/puppet-ca-cert.pem',
-        },
-      ],
+      # A startup script that installs the CA certificate, Google Cloud
+      # Logging, and defer to Puppet Agent installer script.
+      'startup-script-url'     =>
+        'gs://graphite-demo-puppetconf-17-1/bootstrap.sh',
+      # The URL of the Puppet Agent installer
+      'puppet-agent-installer' =>
+        "https://${master_server}:8140/packages/current/install.bash",
+      # A trusted location where to fetch CA certificate (if not publicly
+      # trusted, or trusted by the image being deployed already).
+      'puppet-ca-cert'         =>
+        'gs://graphite-demo-puppetconf-17-1/puppet-ca-cert.pem',
     },
     network_interfaces => [
       {
