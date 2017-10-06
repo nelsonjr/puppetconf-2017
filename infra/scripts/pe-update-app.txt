@@ -1,0 +1,3 @@
+Job query:
+
+resources[certname] { type = "Class" and title = "Profile::Myapp" }
