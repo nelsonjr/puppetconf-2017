@@ -187,5 +187,61 @@ gcompute_forwarding_rule { 'zero-to-prod-10-fwd':
   region      => 'us-west1',
   project     => 'graphite-demo-puppetconf-17-1',
   credential  => 'mycred',
-  require     => Gcompute_address['zero-to-prod-10-ip'],
 }
+
+#--------------------------
+# Step 3: Encrypted site
+
+gcompute_ssl_certificate { 'zero-to-prod-10-ssl':
+  ensure      => present,
+  description => 'myapp certificate',
+  certificate => file(join(
+    [
+      '/etc/letsencrypt/live',
+      'myapp.puppetconf17.graphite.cloudnativeapp.com',
+      'fullchain.pem'
+    ], '/')
+  ),
+  private_key => file(join(
+    [
+      '/etc/letsencrypt/live',
+      'myapp.puppetconf17.graphite.cloudnativeapp.com',
+      'privkey.pem'
+    ], '/')
+  ),
+  project     => 'graphite-demo-puppetconf-17-1',
+  credential  => 'mycred',
+}
+
+gcompute_backend_service { 'zero-to-prod-10-be':
+  ensure        => present,
+  backends      => [
+    { group => 'zero-to-prod-10-mig' },
+  ],
+  enable_cdn    => true,
+  health_checks => [
+    gcompute_health_check_ref('zero-to-prod-10-hc',
+                              'graphite-demo-puppetconf-17-1'),
+  ],
+  project       => 'graphite-demo-puppetconf-17-1',
+  credential    => 'mycred',
+}
+
+gcompute_url_map { 'zero-to-prod-10-urlmap':
+  ensure          => present,
+  default_service => 'zero-to-prod-10-be',
+  project         => 'graphite-demo-puppetconf-17-1',
+  credential      => 'mycred',
+}
+
+gcompute_target_https_proxy { 'zero-to-prod-10-https':
+  ensure           => present,
+  ssl_certificates => [
+    'zero-to-prod-10-ssl',
+  ],
+  url_map          => 'zero-to-prod-10-urlmap',
+  project          => 'google.com:graphite-playground',
+  credential       => 'mycred',
+}
+
+
