@@ -7,4 +7,9 @@ back here later and watch the videos and catch up)
 [Puppet & Google Cloud: From Nothing to Production in 10 min][sched]
 – Nelson Araujo, Google
 
+[Kubernetes in the Cloud with Puppet and Google Container Engine][sched-gke]
+– Mandy Waite, Google
+
+
 [sched]: http://sched.co/B4xR
+[sched-gke]: http://sched.co/B4xJ
