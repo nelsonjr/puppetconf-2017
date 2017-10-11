@@ -10,6 +10,7 @@ gauth_credential { 'mycred':
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',
+    'https://www.googleapis.com/auth/ndev.clouddns.readwrite',
   ],
 }
 
@@ -36,6 +37,13 @@ gcompute_machine_type { 'n1-standard-1':
 
 $master_server = 'puppet.c.graphite-demo-puppetconf-17-1.internal'
 info("Puppet Master @ ${master_server}")
+
+gcompute_address { 'zero-to-prod-10-app-ip':
+  ensure     => present,
+  region     => 'us-west1',
+  project    => 'graphite-demo-puppetconf-17-1',
+  credential => 'mycred',
+}
 
 gcompute_instance { 'zero-to-prod-10-app':
   ensure             => present,
@@ -68,8 +76,9 @@ gcompute_instance { 'zero-to-prod-10-app':
     {
       access_configs => [
         {
-          name => 'External NAT',
-          type => 'ONE_TO_ONE_NAT',
+          name   => 'External NAT',
+          nat_ip => 'zero-to-prod-10-app-ip',
+          type   => 'ONE_TO_ONE_NAT',
         },
       ],
       network        => 'default',
@@ -100,4 +109,36 @@ gcompute_instance { 'zero-to-prod-10-app':
   zone               => 'us-west1-a',
   project            => 'graphite-demo-puppetconf-17-1',
   credential         => 'mycred',
+}
+
+# Fetch the IP address of the VM
+$fn_auth = gauth_credential_serviceaccount_for_function(
+  '/home/nelsona/my_account.json',
+  ['https://www.googleapis.com/auth/compute.readonly']
+)
+
+$ip_address = gcompute_address_ip('zero-to-prod-10-app-ip', 'us-west1',
+                                  'graphite-demo-puppetconf-17-1', $fn_auth)
+
+if (!$ip_address) {
+  warning('IP address not available in this run. Apply manifest again.')
+} else {
+  info("VM IP address = ${ip_address}")
+
+  gdns_managed_zone { 'app-puppetconf17':
+    ensure      => present,
+    dns_name    => 'puppetconf17.cloudnativeapp.com.',
+    project     => 'graphite-demo-puppetconf-17-1',
+    credential  => 'mycred',
+  }
+
+  gdns_resource_record_set { 'www.puppetconf17.cloudnativeapp.com.':
+    ensure       => present,
+    managed_zone => 'app-puppetconf17',
+    type         => 'A',
+    ttl          => 5,
+    target       => $ip_address,
+    project      => 'graphite-demo-puppetconf-17-1',
+    credential   => 'mycred',
+  }
 }
