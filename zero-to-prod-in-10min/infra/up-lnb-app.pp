@@ -197,9 +197,8 @@ $fn_auth = gauth_credential_serviceaccount_for_function(
   ['https://www.googleapis.com/auth/compute.readonly']
 )
 
-$ip_address = gcompute_forwarding_rule_ip('zero-to-prod-10-fwd', 'us-west1',
-                                          'graphite-demo-puppetconf-17-1',
-                                          $fn_auth)
+$ip_address = gcompute_address_ip('zero-to-prod-10-ip', 'us-west1',
+                                  'graphite-demo-puppetconf-17-1', $fn_auth)
 
 if (!$ip_address) {
   warning('IP address not available in this run. Apply manifest again.')
