@@ -11,6 +11,7 @@ gauth_credential { 'mycred':
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',
+    'https://www.googleapis.com/auth/ndev.clouddns.readwrite',
   ],
 }
 
@@ -71,4 +72,25 @@ gcompute_address { 'zero-to-prod-10-ip':
   region     => 'us-west1',
   project    => 'graphite-demo-puppetconf-17-1',
   credential => 'mycred',
+}
+
+# We do not delete the DNS Zone or it may go out of sync with the parent DNS
+# zone (if you must delete the zone make sure you update the parent DNS
+# accordingly).
+gdns_managed_zone { 'app-puppetconf17':
+  ensure      => present,
+  dns_name    => 'puppetconf17.cloudnativeapp.com.',
+  project     => 'graphite-demo-puppetconf-17-1',
+  credential  => 'mycred',
+}
+
+gdns_resource_record_set { [
+    'www.puppetconf17.cloudnativeapp.com.',
+    'staging.puppetconf17.cloudnativeapp.com.',
+  ]:
+  ensure       => absent,
+  type         => 'A',
+  managed_zone => 'app-puppetconf17',
+  project      => 'graphite-demo-puppetconf-17-1',
+  credential   => 'mycred',
 }
