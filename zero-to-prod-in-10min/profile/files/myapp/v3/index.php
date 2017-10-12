@@ -39,12 +39,12 @@ header('Cache-Control: no-cache');
       vertical-align: middle;
     }
     #banner #slogan {
-      font-size: 24pt;
+      font-size: 18pt;
       font-weight: bold;
       color: white;
       float: right;
-      margin: 6pt;
       opacity: 0.25;
+      text-align: right;
     }
     #content {
       margin: 16pt;
@@ -212,7 +212,7 @@ header('Cache-Control: no-cache');
       <span id='amp'>+</span>
       <img id='puppet' src='puppet-logo.png'>
       <div id='slogan'>
-        From nothing to production in 10 minutes!
+        From nothing to production in 10 minutes!<br/>
         Make it scalable in 30 minutes!
       </div>
     </div>
