@@ -1,3 +1,4 @@
+#!/opt/puppetlabs/bin/puppet apply
 #    ___                        _     ___             __   ____   ___  _ _____ 
 #   / _ \_   _ _ __  _ __   ___| |_  / __\___  _ __  / _| |___ \ / _ \/ |___  |
 #  / /_)/ | | | '_ \| '_ \ / _ \ __|/ /  / _ \| '_ \| |_    __) | | | | |  / / 
@@ -7,7 +8,7 @@
 
 
 gauth_credential { 'mycred':
-  path     => '/home/nelsona/my_account.json',
+  path     => '/home/ody/my_account.json',
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',

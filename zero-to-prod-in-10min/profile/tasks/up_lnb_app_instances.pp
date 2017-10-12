@@ -1,3 +1,4 @@
+#!/opt/puppetlabs/bin/puppet apply
 #    ___                        _     ___             __   ____   ___  _ _____ 
 #   / _ \_   _ _ __  _ __   ___| |_  / __\___  _ __  / _| |___ \ / _ \/ |___  |
 #  / /_)/ | | | '_ \| '_ \ / _ \ __|/ /  / _ \| '_ \| |_    __) | | | | |  / / 
@@ -6,7 +7,7 @@
 #             |_|   |_|                                                        
 
 gauth_credential { 'mycred':
-  path     => '/home/nelsona/my_account.json',
+  path     => '/home/ody/my_account.json',
   provider => serviceaccount,
   scopes   => [
     'https://www.googleapis.com/auth/compute',
@@ -189,42 +190,4 @@ gcompute_forwarding_rule { 'zero-to-prod-10-fwd':
   project     => 'graphite-demo-puppetconf-17-1',
   credential  => 'mycred',
   require     => Gcompute_address['zero-to-prod-10-ip'],
-}
-
-# Fetch the IP address of the VM
-$fn_auth = gauth_credential_serviceaccount_for_function(
-  '/home/nelsona/my_account.json',
-  ['https://www.googleapis.com/auth/compute.readonly']
-)
-
-$ip_address = gcompute_address_ip('zero-to-prod-10-ip', 'us-west1',
-                                  'graphite-demo-puppetconf-17-1', $fn_auth)
-
-if (!$ip_address) {
-  warning('IP address not available in this run. Apply manifest again.')
-} else {
-  info("VM IP address = ${ip_address}")
-
-  gdns_managed_zone { 'app-puppetconf17':
-    ensure      => present,
-    dns_name    => 'puppetconf17.cloudnativeapp.com.',
-    project     => 'graphite-demo-puppetconf-17-1',
-    credential  => 'mycred',
-  }
-
-  $rr_name = defined('$production') ? {
-    true  => 'www.puppetconf17.cloudnativeapp.com.',
-    false => 'staging.puppetconf17.cloudnativeapp.com.',
-  }
-  info("DNS record: ${rr_name}")
-
-  gdns_resource_record_set { $rr_name:
-    ensure       => present,
-    managed_zone => 'app-puppetconf17',
-    type         => 'A',
-    ttl          => 5,
-    target       => $ip_address,
-    project      => 'graphite-demo-puppetconf-17-1',
-    credential   => 'mycred',
-  }
 }
