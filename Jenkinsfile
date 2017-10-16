@@ -28,8 +28,8 @@ fi
 
 $PUPPET resource package googleauth \\
   ensure=present provider=puppet_gem'''
-        sh '''if ! puppet module list | grep google-cloud; then
-  puppet module install google-cloud
+        sh '''if ! $PUPPET module list | grep google-cloud; then
+  $PUPPET module install google-cloud
 fi'''
       }
     }
