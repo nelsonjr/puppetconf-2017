@@ -28,9 +28,15 @@ fi
     }
     stage('Google Modules') {
       steps {
+        sh '''$PUPPET resource package google-api-client \\
+  ensure=present provider=puppet_gem
+
+$PUPPET resource package googleauth \\
+  ensure=present provider=puppet_gem'''
         sh '''$PUPPET apply <<EOF
 
-puppet_module { \'google-gauth\':
+# Install Google Authentication module
+module { \'google-gauth\':
   ensure => present,
 }
 
