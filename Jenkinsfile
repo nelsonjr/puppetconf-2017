@@ -28,7 +28,9 @@ $puppet resource package bolt \\
     }
     stage('Infrastructure Up') {
       steps {
-        sh '''puppet module list
+        sh '''declare -r puppet=/opt/puppetlabs/bin/puppet
+
+$puppet module list
 '''
       }
     }
