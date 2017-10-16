@@ -29,8 +29,6 @@ $puppet resource package bolt \\
     stage('Infrastructure Up') {
       steps {
         sh '''puppet module list
-
-find .
 '''
       }
     }
