@@ -21,11 +21,6 @@ fi
   ensure=present provider=puppet_gem'''
       }
     }
-    stage('Module Installer') {
-      steps {
-        sh '$PUPPET module install rcoleman-puppet_module'
-      }
-    }
     stage('Google Modules') {
       steps {
         sh '''$PUPPET resource package google-api-client \\
@@ -33,14 +28,9 @@ fi
 
 $PUPPET resource package googleauth \\
   ensure=present provider=puppet_gem'''
-        sh '''$PUPPET apply <<EOF
-
-# Install Google Authentication module
-module { \'google-gauth\':
-  ensure => present,
-}
-
-EOF'''
+        sh '''if ! puppet module list | grep google-cloud; then
+  puppet module install google-cloud
+fi'''
       }
     }
   }
