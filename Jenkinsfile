@@ -21,17 +21,26 @@ fi
   ensure=present provider=puppet_gem'''
       }
     }
-    stage('Infrastructure Up') {
+    stage('Module Installer') {
       steps {
-        sh '''declare -r puppet=/opt/puppetlabs/bin/puppet
+        sh '$PUPPET module install rcoleman-puppet_module'
+      }
+    }
+    stage('Google Modules') {
+      steps {
+        sh '''$PUPPET apply <<EOF
 
-$puppet module list
+puppet_module { \'google-gauth\':
+  ensure => present,
+}
 
-export'''
+EOF'''
       }
     }
   }
   environment {
     MODULES = 'google-cloud'
+    MODULE_DIR = '/etc/puppetlabs/code/environments/production/modules'
+    PUPPET = '/opt/puppetlabs/bin/puppet'
   }
 }
