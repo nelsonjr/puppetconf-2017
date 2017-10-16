@@ -30,6 +30,11 @@ fi
 $PUPPET module list --tree'''
       }
     }
+    stage('Up Infrastructure') {
+      steps {
+        sh 'find .'
+      }
+    }
   }
   environment {
     MODULES = 'google-cloud'
