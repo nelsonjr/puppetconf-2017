@@ -117,6 +117,7 @@ hosts = {
 }
 
 versions = {
+  failures: 0,
   unknown: 0
 }
 

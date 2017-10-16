@@ -10,12 +10,7 @@ fi'''
         sh '''# Puppet setup
 if ! rpm -q puppet-agent; then
   yum install -y puppet-agent
-fi
-'''
-      }
-    }
-    stage('Bolt Setup') {
-      steps {
+fi'''
         sh '$PUPPET resource package gcc-c++ ensure=present'
         sh '''$PUPPET resource package bolt \\
   ensure=present provider=puppet_gem'''
