@@ -30,7 +30,9 @@ $PUPPET resource package googleauth \\
   ensure=present provider=puppet_gem'''
         sh '''if ! $PUPPET module list | grep google-cloud; then
   $PUPPET module install google-cloud
-fi'''
+fi
+
+$PUPPET module list --tree'''
       }
     }
   }
