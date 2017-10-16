@@ -31,7 +31,8 @@ $puppet resource package bolt \\
         sh '''declare -r puppet=/opt/puppetlabs/bin/puppet
 
 $puppet module list
-'''
+
+export'''
       }
     }
   }
