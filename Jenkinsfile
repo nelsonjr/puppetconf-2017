@@ -26,5 +26,11 @@ $puppet resource package bolt \\
   ensure=present provider=puppet_gem'''
       }
     }
+    stage('Infrastructure Up') {
+      steps {
+        sh '''find .
+'''
+      }
+    }
   }
 }
