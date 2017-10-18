@@ -30,7 +30,11 @@ fi
 $PUPPET module list --tree'''
         sh '''$PUPPET apply <<EOF
 
-file { "${PWD}/.puppetlabs/etc/code/modules/infra":
+file { "${PWD}/.puppetlabs/etc/code/modules":
+  ensure => directory,
+}
+
+file { "${PWD}/.puppetlabs/etc/code/modules/profile":
   ensure => link,
   target => "${PWD}/zero-to-prod-in-10min/profile",
 }
