@@ -28,6 +28,15 @@ $PUPPET resource package googleauth \\
 fi
 
 $PUPPET module list --tree'''
+        sh '''$PUPPET apply <<EOF
+
+file { "${PWD}/.puppetlabs/etc/code/modules/infra":
+  ensure => link,
+  target => "${PWD}/zero-to-prod-in-10min/profile",
+}
+
+EOF
+'''
       }
     }
     stage('Up Infrastructure') {
