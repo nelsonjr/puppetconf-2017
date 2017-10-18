@@ -45,7 +45,10 @@ file { "${PWD}/.puppetlabs/etc/code/modules/profile":
 }
 
 EOF
-'''
+
+err=$?
+
+[[ $err -eq 0 || $err -eq 4 ]] || (echo "Failed"; exit 1)'''
       }
     }
     stage('Up Infrastructure') {
