@@ -39,11 +39,6 @@ file { [
     ensure => directory,
 }
 
-file { "${PWD}/.puppetlabs/etc/code/modules/profile":
-  ensure => link,
-  target => "${PWD}/zero-to-prod-in-10min/profile",
-}
-
 EOF
 
 err=$?
@@ -53,7 +48,20 @@ err=$?
     }
     stage('Up Infrastructure') {
       steps {
-        sh 'find .'
+        sh '''$PUPPET apply <<EOF
+
+file { "${PWD}/.puppetlabs/etc/code/modules/profile":
+  ensure => link,
+  target => "${PWD}/zero-to-prod-in-10min/profile",
+}
+
+EOF
+
+err=$?
+
+[[ $err -eq 0 || $err -eq 4 ]] || (echo "Failed"; exit 1)
+
+puppet module list'''
       }
     }
   }
