@@ -48,7 +48,9 @@ err=$?
     }
     stage('Up Infrastructure') {
       steps {
-        sh '''$PUPPET apply <<EOF
+        sh '''# Register module
+
+$PUPPET apply <<EOF
 
 file { "${PWD}/.puppetlabs/etc/code/modules/profile":
   ensure => link,
@@ -61,7 +63,10 @@ err=$?
 
 [[ $err -eq 0 || $err -eq 4 ]] || (echo "Failed"; exit 1)
 
-puppet module list'''
+$PUPPET module list'''
+        sh '''# Copy the service account
+
+$GSUTIL cp $KEY_SOURCE $PWD/my_account.json'''
       }
     }
   }
@@ -69,5 +74,7 @@ puppet module list'''
     MODULES = 'google-cloud'
     MODULE_DIR = '/etc/puppetlabs/code/environments/production/modules'
     PUPPET = '/opt/puppetlabs/bin/puppet'
+    KEY_SOURCE = 'gs://graphite-demo-puppetconf-17-1/my_account.json'
+    GSUTIL = 'gsutil'
   }
 }
